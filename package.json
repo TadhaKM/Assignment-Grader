@@ -1,0 +1,26 @@
+{
+  "name": "assignment-grader",
+  "version": "1.0.0",
+  "description": "AI-powered assignment grading tool using Claude",
+  "main": "grading-server.js",
+  "scripts": {
+    "start": "node grading-server.js",
+    "dev": "nodemon grading-server.js"
+  },
+  "keywords": [
+    "grading",
+    "assignment",
+    "ai",
+    "claude",
+    "education"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.70.1",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
