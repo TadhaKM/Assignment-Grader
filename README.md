@@ -155,41 +155,6 @@ Response:
 }
 ```
 
-## Troubleshooting
-
-### "ANTHROPIC_API_KEY is not configured"
-
-Make sure you've created a `.env` file with your API key.
-
-### API Key Invalid
-
-Double-check that you've copied your API key correctly from the Anthropic console.
-
-### Server Won't Start
-
-- Check that port 3000 is not in use by another application
-- Verify all dependencies are installed: `npm install`
-
-## Cost Considerations
-
-This tool uses the Claude API which has associated costs:
-- Each grading request uses ~1,000-3,000 tokens
-- Check [Anthropic's pricing](https://www.anthropic.com/pricing) for current rates
-- Monitor your usage in the Anthropic console
-
-## Privacy & Security
-
-- Student code is sent to Anthropic's API for grading
-- Do not submit code containing sensitive information or secrets
-- Review Anthropic's [data usage policies](https://www.anthropic.com/legal/privacy)
-
-## Tips for Best Results
-
-1. **Be Specific in Rubrics**: Clearly define point values and criteria
-2. **Provide Complete Solutions**: More detailed expected answers = better grading
-3. **Include Expected Behavior**: Describing outputs helps with functional assessment
-4. **Review AI Feedback**: AI grading is a tool to assist, not replace instructor judgment
-5. **Use for Preliminary Grading**: Great for initial assessment, final review by instructor recommended
 
 ## License
 
