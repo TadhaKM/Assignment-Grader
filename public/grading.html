@@ -10,64 +10,149 @@
     <div class="container">
         <header>
             <h1>🎓 Assignment Grading Tool</h1>
-            <p class="subtitle">AI-powered code evaluation and feedback</p>
+            <p class="subtitle">AI-powered evaluation and feedback for any subject</p>
         </header>
 
         <div class="form-container">
             <form id="gradingForm">
-                <div class="form-group">
-                    <label for="markingScheme">
-                        <span class="label-title">Marking Scheme / Rubric</span>
-                        <span class="label-desc">Define how the assignment should be graded (e.g., functionality 40%, code quality 30%, documentation 30%)</span>
-                    </label>
-                    <textarea
-                        id="markingScheme"
-                        name="markingScheme"
-                        rows="6"
-                        placeholder="Example:&#10;- Functionality (40 points): Code runs without errors and meets all requirements&#10;- Code Quality (30 points): Clean, readable, follows best practices&#10;- Documentation (20 points): Well-commented, clear variable names&#10;- Testing (10 points): Includes test cases&#10;Total: 100 points"
-                        required
-                    ></textarea>
+                <!-- Step 1: Subject and Assessment Type Selection -->
+                <div class="section">
+                    <h2 class="section-title">1. Select Subject & Assessment Type</h2>
+
+                    <div class="two-column">
+                        <div class="form-group">
+                            <label for="subject">
+                                <span class="label-title">Subject Area</span>
+                                <span class="label-desc">Choose the subject for specialized grading criteria</span>
+                            </label>
+                            <select id="subject" name="subject" required>
+                                <option value="">-- Select Subject --</option>
+                                <option value="programming">Programming/Computer Science</option>
+                                <option value="mathematics">Mathematics</option>
+                                <option value="science">Science (Physics/Chemistry/Biology)</option>
+                                <option value="essay">Essay/Writing</option>
+                                <option value="history">History/Social Studies</option>
+                                <option value="languages">Foreign Languages</option>
+                                <option value="art">Art/Design</option>
+                                <option value="business">Business/Economics</option>
+                                <option value="other">Other/General</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assessmentType">
+                                <span class="label-title">Assessment Type</span>
+                                <span class="label-desc">What kind of assignment is this?</span>
+                            </label>
+                            <select id="assessmentType" name="assessmentType" required>
+                                <option value="">-- Select Type --</option>
+                                <option value="code">Code/Programming Assignment</option>
+                                <option value="theory">Theory/Conceptual Questions</option>
+                                <option value="problem">Problem Solving</option>
+                                <option value="essay">Essay/Written Response</option>
+                                <option value="lab">Lab Report/Practical</option>
+                                <option value="project">Project/Portfolio</option>
+                                <option value="exam">Exam/Test Questions</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="gradingFocusInfo" class="info-box" style="display: none;">
+                        <h4>Grading Focus Areas:</h4>
+                        <ul id="gradingFocusList"></ul>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="expectedAnswer">
-                        <span class="label-title">Expected Answer / Solution</span>
-                        <span class="label-desc">Provide the ideal solution or key components that should be present</span>
-                    </label>
-                    <textarea
-                        id="expectedAnswer"
-                        name="expectedAnswer"
-                        rows="8"
-                        placeholder="Paste the expected code solution or describe the key requirements..."
-                        required
-                    ></textarea>
+                <!-- Step 2: Marking Scheme -->
+                <div class="section">
+                    <h2 class="section-title">2. Define Marking Scheme</h2>
+
+                    <div class="form-group">
+                        <label for="markingScheme">
+                            <span class="label-title">Marking Scheme / Rubric</span>
+                            <span class="label-desc">Define how the assignment should be graded with point values</span>
+                        </label>
+                        <textarea
+                            id="markingScheme"
+                            name="markingScheme"
+                            rows="6"
+                            placeholder="Example:&#10;Total: 100 points&#10;&#10;- Understanding of concepts (30 pts)&#10;- Accuracy of answer (30 pts)&#10;- Clarity of explanation (20 pts)&#10;- Use of examples (10 pts)&#10;- Presentation/formatting (10 pts)"
+                            required
+                        ></textarea>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="studentCode">
-                        <span class="label-title">Student Code to Grade</span>
-                        <span class="label-desc">The actual code submission to be evaluated</span>
-                    </label>
-                    <textarea
-                        id="studentCode"
-                        name="studentCode"
-                        rows="12"
-                        placeholder="Paste the student's code here..."
-                        required
-                    ></textarea>
+                <!-- Step 3: Expected Answer -->
+                <div class="section">
+                    <h2 class="section-title">3. Provide Expected Answer</h2>
+
+                    <div class="form-group">
+                        <label for="expectedAnswer">
+                            <span class="label-title">Model Answer / Solution</span>
+                            <span class="label-desc">The ideal answer or key points that should be included</span>
+                        </label>
+                        <textarea
+                            id="expectedAnswer"
+                            name="expectedAnswer"
+                            rows="8"
+                            placeholder="Enter the expected answer, solution, or key points that a correct response should include..."
+                            required
+                        ></textarea>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="expectedOutput">
-                        <span class="label-title">Expected Output / Appearance (Optional)</span>
-                        <span class="label-desc">Describe how the code should work or what it should produce</span>
-                    </label>
-                    <textarea
-                        id="expectedOutput"
-                        name="expectedOutput"
-                        rows="5"
-                        placeholder="Example:&#10;- When run with input [1, 2, 3], should output 6&#10;- Should display a login form with email and password fields&#10;- Should validate email format and show error messages"
-                    ></textarea>
+                <!-- Step 4: Student Submission -->
+                <div class="section">
+                    <h2 class="section-title">4. Student Submission</h2>
+
+                    <div class="form-group">
+                        <label for="studentWork">
+                            <span class="label-title">Student's Work</span>
+                            <span class="label-desc">Paste or type the student's submission to be graded</span>
+                        </label>
+                        <textarea
+                            id="studentWork"
+                            name="studentWork"
+                            rows="10"
+                            placeholder="Paste the student's work here..."
+                            required
+                        ></textarea>
+                    </div>
+
+                    <!-- Image Upload Section -->
+                    <div class="form-group">
+                        <label>
+                            <span class="label-title">Upload Images (Optional)</span>
+                            <span class="label-desc">Add images of handwritten work, diagrams, artwork, or screenshots</span>
+                        </label>
+                        <div class="image-upload-area" id="imageUploadArea">
+                            <input type="file" id="imageInput" accept="image/*" multiple style="display: none;">
+                            <div class="upload-prompt" id="uploadPrompt">
+                                <span class="upload-icon">📷</span>
+                                <p>Click to upload images or drag & drop</p>
+                                <p class="upload-hint">Supports JPG, PNG, GIF, WebP (max 5 images)</p>
+                            </div>
+                            <div id="imagePreviewContainer" class="image-preview-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Additional Context -->
+                <div class="section">
+                    <h2 class="section-title">5. Additional Context (Optional)</h2>
+
+                    <div class="form-group">
+                        <label for="additionalContext">
+                            <span class="label-title">Extra Instructions or Context</span>
+                            <span class="label-desc">Any additional information for the grader (special requirements, student context, etc.)</span>
+                        </label>
+                        <textarea
+                            id="additionalContext"
+                            name="additionalContext"
+                            rows="4"
+                            placeholder="Optional: Add any special instructions, context about the student, or specific things to look for..."
+                        ></textarea>
+                    </div>
                 </div>
 
                 <div class="button-group">
@@ -81,7 +166,10 @@
         </div>
 
         <div id="results" class="results-container" style="display: none;">
-            <h2>Grading Results</h2>
+            <div class="results-header">
+                <h2>Grading Results</h2>
+                <div id="resultsMeta" class="results-meta"></div>
+            </div>
             <div id="resultsContent"></div>
         </div>
 
