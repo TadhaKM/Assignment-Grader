@@ -1,15 +1,25 @@
 # Assignment Grading Tool
 
-An AI-powered web application that uses Claude (Anthropic's AI) to automatically grade programming assignments and provide detailed, constructive feedback.
+An AI-powered web application that uses Claude (Anthropic's AI) to automatically grade assignments across multiple subjects and provide detailed, constructive feedback.
 
 ## Features
 
-- **Automated Grading**: Submit student code and get comprehensive AI-powered evaluations
+- **Multi-Subject Support**: Grade assignments in Programming, Math, Science, Essay Writing, History, Languages, Art, Business, and more
+- **Multiple Assessment Types**: Support for code, theory, problem-solving, essays, lab reports, projects, and exams
+- **Image Upload**: Upload images of handwritten work, diagrams, or artwork for AI analysis
 - **Customizable Rubrics**: Define your own marking schemes and criteria
-- **Detailed Feedback**: Get specific, actionable feedback on what's right and what needs improvement
-- **Expected Solutions**: Compare student code against model solutions
-- **Output Validation**: Specify expected behavior and outputs for thorough evaluation
-- **Clean Interface**: Simple, intuitive web interface for easy grading
+- **Detailed Feedback**: Get specific, actionable feedback on strengths and areas for improvement
+- **Security Hardened**: Rate limiting, input validation, and OWASP best practices
+
+## Security Features
+
+This application implements comprehensive security measures:
+
+- **Rate Limiting**: IP-based rate limiting (100 req/15min general, 20 req/15min for grading)
+- **Input Validation**: Schema-based validation with type checks and length limits
+- **Security Headers**: Helmet.js for CSP, X-Frame-Options, HSTS, and more
+- **Error Sanitization**: Safe error messages that don't leak internal details
+- **API Key Protection**: Environment variables only, never exposed client-side
 
 ## Setup Instructions
 
@@ -37,9 +47,11 @@ cp .env.example .env
 Edit `.env` and add your API key:
 
 ```
-ANTHROPIC_API_KEY=your_actual_api_key_here
+ANTHROPIC_API_KEY=sk-ant-api03-your-key-here
 PORT=3000
 ```
+
+**Security Note**: Never commit `.env` files or hardcode API keys in source code.
 
 ### 4. Start the Server
 
@@ -58,103 +70,148 @@ npm run dev
 Open your browser and navigate to:
 
 ```
-http://localhost:3000/grading.html
+http://localhost:3000
 ```
+
+## Supported Subjects
+
+| Subject | Grading Focus |
+|---------|---------------|
+| Programming | Code correctness, quality, efficiency, error handling |
+| Mathematics | Accuracy, problem-solving approach, notation, reasoning |
+| Science | Scientific accuracy, concepts, formulas, terminology |
+| Essay/Writing | Thesis, argument structure, evidence, grammar, style |
+| History | Historical accuracy, analysis, sources, context |
+| Languages | Grammar, vocabulary, sentence structure, communication |
+| Art/Design | Technical skill, creativity, design principles |
+| Business | Concepts, analysis, real-world application |
+
+## Assessment Types
+
+- **Code/Programming**: Evaluate code correctness, efficiency, and style
+- **Theory/Conceptual**: Assess understanding of theoretical concepts
+- **Problem Solving**: Evaluate methodology and final answers
+- **Essay/Written**: Grade thesis, arguments, and writing quality
+- **Lab Report**: Assess methodology, data, and conclusions
+- **Project/Portfolio**: Evaluate overall quality and creativity
+- **Exam/Test**: Grade accuracy and completeness
 
 ## How to Use
 
-### Step 1: Define Your Marking Scheme
+### Step 1: Select Subject & Assessment Type
 
-Enter your grading criteria, for example:
+Choose the appropriate subject area and assessment type for specialized grading criteria.
 
-```
-Total Points: 100
+### Step 2: Define Your Marking Scheme
 
-Functionality (40 points):
-- Code runs without errors (20 pts)
-- Meets all requirements (20 pts)
-
-Code Quality (30 points):
-- Clean, readable code (15 pts)
-- Follows best practices (15 pts)
-
-Documentation (20 points):
-- Well-commented code (10 pts)
-- Clear variable names (10 pts)
-
-Testing (10 points):
-- Includes test cases (10 pts)
-```
-
-### Step 2: Provide Expected Answer
-
-Paste your model solution or describe what the correct implementation should include:
-
-```javascript
-function calculateAverage(numbers) {
-  if (numbers.length === 0) return 0;
-  const sum = numbers.reduce((acc, num) => acc + num, 0);
-  return sum / numbers.length;
-}
-```
-
-### Step 3: Submit Student Code
-
-Paste the student's code submission:
-
-```javascript
-function calculateAverage(numbers) {
-  let sum = 0;
-  for (let i = 0; i < numbers.length; i++) {
-    sum += numbers[i];
-  }
-  return sum / numbers.length;
-}
-```
-
-### Step 4: (Optional) Specify Expected Output
-
-Describe how the code should behave:
+Enter your grading criteria with point values:
 
 ```
-- calculateAverage([1, 2, 3, 4, 5]) should return 3
-- calculateAverage([]) should return 0
-- Should handle edge cases like empty arrays
+Total: 100 points
+
+- Understanding of concepts (30 pts)
+- Accuracy of answer (30 pts)
+- Clarity of explanation (20 pts)
+- Use of examples (10 pts)
+- Presentation (10 pts)
 ```
+
+### Step 3: Provide Expected Answer
+
+Enter the model solution or key points that should be included.
+
+### Step 4: Submit Student Work
+
+Paste the student's submission. Optionally upload images (up to 5) of handwritten work, diagrams, or visual content.
 
 ### Step 5: Get Results
 
-Click "Grade Assignment" and receive:
-- A final grade (e.g., "85/100" or "B+")
-- What the student did well
-- What needs improvement
-- Specific, actionable feedback
+Click "Grade Assignment" to receive:
+- A final grade based on your rubric
+- Detailed feedback on strengths
+- Areas for improvement with specific examples
+- Constructive suggestions
 
-## API Endpoint
+## API Reference
 
-The grading functionality is also available as a REST API:
+### POST `/api/grade`
 
-**POST** `/api/grade`
+Grade an assignment programmatically.
 
-Request body:
+**Request Body:**
 ```json
 {
-  "markingScheme": "Your marking scheme here...",
-  "expectedAnswer": "Expected solution code...",
-  "studentCode": "Student's submitted code...",
-  "expectedOutput": "Optional: Expected behavior..."
+  "subject": "programming",
+  "assessmentType": "code",
+  "markingScheme": "Total: 100 points...",
+  "expectedAnswer": "Model solution...",
+  "studentWork": "Student's submission...",
+  "additionalContext": "Optional extra instructions...",
+  "images": [
+    {
+      "data": "base64-encoded-image-data",
+      "mediaType": "image/jpeg"
+    }
+  ]
 }
 ```
 
-Response:
+**Response:**
 ```json
 {
   "grade": "85/100",
-  "feedback": "Detailed feedback text...",
+  "feedback": "Detailed feedback...",
+  "subject": "Programming/Computer Science",
+  "assessmentType": "Code/Programming Assignment",
   "success": true
 }
 ```
 
+**Rate Limits:**
+- 20 requests per 15 minutes per IP
+
+### GET `/api/options`
+
+Get available subjects and assessment types.
+
+### GET `/api/health`
+
+Health check endpoint.
+
+## Input Limits
+
+| Field | Min | Max |
+|-------|-----|-----|
+| Marking Scheme | 10 chars | 10,000 chars |
+| Expected Answer | 10 chars | 50,000 chars |
+| Student Work | 1 char | 100,000 chars |
+| Additional Context | - | 5,000 chars |
+| Images | - | 5 images, 10MB each |
+
+## Troubleshooting
+
+### "Grading service is not configured"
+Ensure `ANTHROPIC_API_KEY` is set in your `.env` file and restart the server.
+
+### "Too many grading requests"
+You've hit the rate limit. Wait 15 minutes or reduce request frequency.
+
+### "Request payload too large"
+Reduce the size of your submission or images. Maximum payload is 20MB.
+
+## Cost Considerations
+
+- Each grading request uses approximately 1,000-3,000 tokens
+- Image analysis increases token usage
+- Monitor usage at [console.anthropic.com](https://console.anthropic.com/)
+
+## Privacy & Security
+
+- Student submissions are sent to Anthropic's API for grading
+- No data is stored on the server
+- API keys are never exposed to the client
+- All inputs are validated and sanitized
+- Review [Anthropic's privacy policy](https://www.anthropic.com/legal/privacy)
 
 ## License
 
